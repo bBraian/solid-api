@@ -7,9 +7,7 @@
 - Zod validator
 - Controllers, Services, Repositories Patterns
 - Inversão de dependências
-- 
-
-
+- SOLID
 
 ## RFs (Requisitos funcionais)
 

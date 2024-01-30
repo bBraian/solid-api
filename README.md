@@ -1,6 +1,15 @@
-# App
+# GymPass style app.
 
-GymPass style app.
+## Conceitos trabalhados
+- Fastify
+- Typescript
+- PrismaORM
+- Zod validator
+- Controllers, Services, Repositories Patterns
+- Inversão de dependências
+- 
+
+
 
 ## RFs (Requisitos funcionais)
 

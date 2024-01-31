@@ -8,6 +8,7 @@
 - Controllers, Services, Repositories Patterns
 - Inversão de dependências
 - SOLID
+- Tratamento de erros
 
 ## RFs (Requisitos funcionais)
 

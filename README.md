@@ -9,6 +9,7 @@
 - Inversão de dependências
 - SOLID
 - Tratamento de erros
+- Testes de integração, testes end to end, testes unitários
 
 ## RFs (Requisitos funcionais)
 

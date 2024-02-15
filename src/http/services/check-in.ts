@@ -2,6 +2,9 @@ import { CheckIn } from "@prisma/client";
 import { CheckInsRepository } from "@/repositories/checkins-repository";
 import { GymsRepository } from "@/repositories/gyms-repository";
 import { ResourceNotExistError } from "./errors/resource-not-exist-error";
+import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coordinates";
+import { MaxDistanceError } from "./errors/max-distance-error";
+import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-error";
 
 interface CheckInServiceRequest {
   userId: string;
@@ -20,20 +23,25 @@ export class CheckInService {
     private gymsRepository: GymsRepository  
   ) {}
 
-  async execute({ userId, gymId }: CheckInServiceRequest): Promise<CheckInServiceResponse> {
+  async execute({ userId, gymId, userLatitude, userLongitude }: CheckInServiceRequest): Promise<CheckInServiceResponse> {
     const gym = await this.gymsRepository.findById(gymId)
 
     if(!gym) {
       throw new ResourceNotExistError()
     }
 
-    //calc distance between gym and user
-    
+    const distance = getDistanceBetweenCoordinates({ latitude: userLatitude, longitude: userLongitude }, { latitude: gym.latitude.toNumber(), longitude: gym.longitude.toNumber() })
+
+    const MAX_DISTANCE = 0.1
+
+    if(distance > MAX_DISTANCE) {
+      throw new MaxDistanceError()
+    }
 
     const checkInOnSameDay = await this.checkInsRepository.findByUserIdOnDate(userId, new Date())
 
     if(checkInOnSameDay) {
-      throw new Error("Can't check in twice in a day");
+      throw new MaxNumberOfCheckInsError();
     }
 
     const checkIn = await this.checkInsRepository.create({
